@@ -4,10 +4,12 @@ import { solveSudoku } from './solver/solveSudoku';
 
 const App: React.FC = () => {
   const [cells, setCells] = useState(Array(81).fill(0));
+  const [filledCells, setFilledCells] = useState<number[]>([]);
 
   //リセットボタンの処理
   const handleReset = () => {
     setCells(Array(81).fill(0));
+    setFilledCells([]);
   };
 
   //解答ボタンの処理
@@ -16,7 +18,8 @@ const App: React.FC = () => {
     if (result === false) {
       alert("問題が解けません");
     } else {
-      setCells(result);
+      setCells(result.solved);
+      setFilledCells(result.filledCells);
     }
   };
 
@@ -37,7 +40,7 @@ const App: React.FC = () => {
           <input
             key={index}
             type="text"
-            className="sudoku-cell"
+            className={`sudoku-cell ${filledCells.includes(index) ? 'filled' : ''}`}
             maxLength={1}
             value={cell !== 0 ? cell.toString() : ""}
             onChange={(e) => handleInputChange(index, e.target.value)}

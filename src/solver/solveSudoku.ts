@@ -1,7 +1,7 @@
 const checkInput = (list: number[][], row: number, col: number, num: number): boolean => {
     //行と列のチェック
     for (let i = 0; i < 9; i++) {
-        if (list[row][i] === num || list[i][col] === num) {
+        if ((i !== col && list[row][i] === num) || (i !== row && list[i][col] === num)) {
             return false;
         }
     }
@@ -10,7 +10,7 @@ const checkInput = (list: number[][], row: number, col: number, num: number): bo
     const blockCol = Math.floor(col / 3) * 3;
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
-            if (list[blockRow + i][blockCol + j] === num) {
+            if ((blockRow + i !== row || blockCol + j !== col) && list[blockRow + i][blockCol + j] === num) {
                 return false;
             }
         }
@@ -100,20 +100,30 @@ const isValidInput = (list: number[][]): boolean => {
     return true;
 };
 
-export const solveSudoku = (cells: number[]): number[] | false => {
+export const solveSudoku = (cells: number[]): { solved: number[], filledCells: number[] } | false => {
     //一次元配列で渡されたcellsを二次元配列のlistに変換
     const list: number[][] = [];
     for (let i = 0; i < 9; i++) {
         list.push(cells.slice(i * 9, (i + 1) * 9));
     }
+
     //初期盤面が不正ならfalseを返す
     if (!isValidInput(list)) {
         return false;
     }
+
     //最初のメモを作成しtrialを実行する
     const memo = createMemo(list);
+    const filledCells: number[] = []; //埋められたセルのインデックスを保持
     if (trial(list, memo)) {
-        return list.flat(); //一次元配列に戻して出力
+        const solved = list.flat(); //一次元配列に戻す
+        //埋められたセルのインデックスを収集
+        solved.forEach((value, index) => {
+            if (cells[index] === 0 && value !== 0) {
+                filledCells.push(index);
+            }
+        })
+        return { solved, filledCells };
     } else {
         return false;
     }

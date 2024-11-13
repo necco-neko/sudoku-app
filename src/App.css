@@ -28,9 +28,15 @@ body {
   height: 60px;
   text-align: center;
   font-size: 35px;
+  font-weight: bold;
   border: 1px solid gray;
   margin-top: -1px;
   outline: none;
+}
+
+.sudoku-cell.filled {
+  color: red;
+  font-weight: bold;
 }
 
 .button-container {
