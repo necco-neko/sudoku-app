@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import { solveSudoku } from './solver/solveSudoku';
 
 const App: React.FC = () => {
   const [cells, setCells] = useState(Array(81).fill(0));
@@ -11,7 +12,7 @@ const App: React.FC = () => {
 
   //解答ボタンの処理
   const handleSolve = () => {
-    console.log(cells);
+    solveSudoku(cells);
   };
 
   //各セル入力変更時の処理
