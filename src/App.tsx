@@ -31,6 +31,31 @@ const App: React.FC = () => {
     setCells(updateCells);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    let nextIndex = index;
+
+    switch (e.key) {
+      case 'ArrowUp':
+        if (index >= 9) nextIndex -= 9; //上方向へ移動
+        break;
+      case 'ArrowDown':
+        if (index < 72) nextIndex += 9; //下方向へ移動
+        break;
+      case 'ArrowLeft':
+        if (index !== 0) nextIndex -= 1; //左方向または前の行の右端に移動
+        break;
+      case 'ArrowRight':
+        if (index !== 80) nextIndex += 1; //右方向または次の行の左端に移動
+        break;
+    }
+      
+    //移動先のインデックスが有効な範囲内か確認
+    if (nextIndex >= 0 && nextIndex < 81) {
+      const nextInput = document.getElementById(`cell-${nextIndex}`);
+      nextInput?.focus();
+    }
+  };
+
   return (
     <div className='app-container'>
       <h1 className='title'>数独解答アプリ</h1>
@@ -39,11 +64,13 @@ const App: React.FC = () => {
         {cells.map((cell, index) => (
           <input
             key={index}
+            id={`cell-${index}`}
             type="text"
             className={`sudoku-cell ${filledCells.includes(index) ? 'filled' : ''}`}
             maxLength={1}
             value={cell !== 0 ? cell.toString() : ""}
             onChange={(e) => handleInputChange(index, e.target.value)}
+            onKeyDown={(e) => handleKeyDown(e, index)}
           />
         ))}
       </div>
