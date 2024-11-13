@@ -94,7 +94,6 @@ export const solveSudoku = (cells: number[]): number[] | false => {
     //最初のメモを作成しtrialを実行する
     const memo = createMemo(list);
     if (trial(list, memo)) {
-        console.log(list);
         return list.flat(); //一次元配列に戻して出力
     } else {
         return false;

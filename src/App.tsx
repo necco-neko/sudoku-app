@@ -12,7 +12,12 @@ const App: React.FC = () => {
 
   //解答ボタンの処理
   const handleSolve = () => {
-    solveSudoku(cells);
+    const result = solveSudoku(cells);
+    if (result ===false) {
+      console.log("問題が解けません");
+    } else {
+      setCells(result);
+    }
   };
 
   //各セル入力変更時の処理
