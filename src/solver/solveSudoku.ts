@@ -85,11 +85,30 @@ const trial = (list: number[][], memo: Set<number>[][]): boolean => {
     return false;
 };
 
+//初期盤面が不正でないことの確認をする関数
+const isValidInput = (list: number[][]): boolean => {
+    for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+            const num = list[row][col];
+            if (num !== 0) {
+                if (!checkInput(list, row, col, num)) {
+                    return false; //不正な入力があればfalseを返す
+                }
+            }
+        }
+    }
+    return true;
+};
+
 export const solveSudoku = (cells: number[]): number[] | false => {
     //一次元配列で渡されたcellsを二次元配列のlistに変換
     const list: number[][] = [];
     for (let i = 0; i < 9; i++) {
         list.push(cells.slice(i * 9, (i + 1) * 9));
+    }
+    //初期盤面が不正ならfalseを返す
+    if (!isValidInput(list)) {
+        return false;
     }
     //最初のメモを作成しtrialを実行する
     const memo = createMemo(list);

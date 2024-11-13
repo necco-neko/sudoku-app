@@ -13,8 +13,8 @@ const App: React.FC = () => {
   //解答ボタンの処理
   const handleSolve = () => {
     const result = solveSudoku(cells);
-    if (result ===false) {
-      console.log("問題が解けません");
+    if (result === false) {
+      alert("問題が解けません");
     } else {
       setCells(result);
     }
